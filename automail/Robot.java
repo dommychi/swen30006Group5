@@ -91,22 +91,7 @@ public class Robot {
     		case DELIVERING:
     			/** Check whether or not the call to return is triggered manually **/
     			if(current_floor == destination_floor){ // If already here drop off item
-                    /** Delivery complete, report this to the simulator! */
-                    delivery.deliver(deliveryItem);
-                    tube.pop();
-                    deliveryCounter++;
-                    if(deliveryCounter > 4){
-                    	throw new ExcessiveDeliveryException();
-                    }
-                    /** Check if want to return or if there are more items in the tube */
-                    if(tube.isEmpty() || behaviour.returnToMailRoom(tube)){ // No items or robot requested return
-                    	changeState(RobotState.RETURNING);
-                    }
-                    else{
-                        /** If there are more items, set the robot's route to the location to deliver the item */
-                        setRoute();
-                        changeState(RobotState.DELIVERING);
-                    }
+                   makeDelivery();
     			} else
     			{
 	    			if(behaviour.returnToMailRoom(tube)){  // Robot requested return
@@ -154,6 +139,26 @@ public class Robot {
     		System.out.println("T: "+Clock.Time()+" | Deliver   " + deliveryItem.toString());
     	}
     }
-    
+
+    private void makeDelivery() throws ExcessiveDeliveryException {
+        /** Delivery complete, report this to the simulator! */
+        delivery.deliver(deliveryItem);
+        tube.pop();
+        deliveryCounter++;
+        if(deliveryCounter > 4){
+            throw new ExcessiveDeliveryException();
+        }
+        /** Check if want to return or if there are more items in the tube */
+        if(tube.isEmpty() || behaviour.returnToMailRoom(tube)){ // No items or robot requested return
+            changeState(RobotState.RETURNING);
+        }
+        else{
+            /** If there are more items, set the robot's route to the location to deliver the item */
+            setRoute();
+            changeState(RobotState.DELIVERING);
+        }
+
+
+    }
 
 }

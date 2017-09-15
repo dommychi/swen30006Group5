@@ -14,6 +14,7 @@ public class MailPool implements IMailPool{
 	
 	private ArrayList<MailItem> nonPriorityPool;
 	private ArrayList<MailItem> priorityPool;
+
 	
 	public MailPool(){
 		nonPriorityPool = new ArrayList<MailItem>();
