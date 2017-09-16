@@ -1,9 +1,8 @@
 package automail;
 
 import exceptions.ExcessiveDeliveryException;
-import exceptions.TubeFullException;
 import strategies.IMailPool;
-import strategies.IRobotBehaviour;
+import strategies.OldIRobotBehaviour;
 
 /**
  * The robot delivers mail!
@@ -16,7 +15,7 @@ import strategies.IRobotBehaviour;
 public class Robot {
 
 	StorageTube tube;
-    IRobotBehaviour behaviour;
+    OldIRobotBehaviour behaviour;
     IMailDelivery delivery;
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
@@ -45,7 +44,7 @@ public class Robot {
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
      */
-    public Robot(IRobotBehaviour behaviour, IMailDelivery delivery, IMailPool mailPool){
+    public Robot(OldIRobotBehaviour behaviour, IMailDelivery delivery, IMailPool mailPool){
         // current_state = RobotState.WAITING;
     	current_state = RobotState.RETURNING;
         current_floor = Building.MAILROOM_LOCATION;
@@ -160,5 +159,7 @@ public class Robot {
 
 
     }
+
+
 
 }

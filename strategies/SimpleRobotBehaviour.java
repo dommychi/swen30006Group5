@@ -4,10 +4,10 @@ import automail.PriorityMailItem;
 import automail.StorageTube;
 import exceptions.TubeFullException;
 
-public class SimpleRobotBehaviour implements IRobotBehaviour {
+public class SimpleRobotBehaviour implements NewIRobotBehaviour {
 	
 	private static final int MAX_TAKE = 4;
-	private boolean newPriority; // Used if we are notified that a priority item has arrived. 
+	private boolean newPriority; // Used if we are notified that a priority item has arrived.
 		
 	public SimpleRobotBehaviour() {
 		newPriority = false;
@@ -43,12 +43,13 @@ public class SimpleRobotBehaviour implements IRobotBehaviour {
 		}
 		return false;
 	}
-	
+
 	@Override
-    public void priorityArrival(int priority) {
+    public boolean priorityArrival(int priority) {
     	// Record that a new one has arrived
     	newPriority = true;
     	System.out.println("T: "+Clock.Time()+" | Priority arrived");
+    	return true;
     }
  
 	@Override

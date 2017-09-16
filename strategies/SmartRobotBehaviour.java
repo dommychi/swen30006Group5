@@ -9,7 +9,7 @@ import automail.PriorityMailItem;
 import automail.StorageTube;
 import exceptions.TubeFullException;
 
-public class SmartRobotBehaviour implements IRobotBehaviour{
+public class SmartRobotBehaviour implements NewIRobotBehaviour {
 	
 	private int newPriorityArrival;
 	
@@ -37,13 +37,8 @@ public class SmartRobotBehaviour implements IRobotBehaviour{
 			}
 			else{
 				// Check if there is more than 1 priority arrival and the size of the tube is greater than or equal to half
-				if(newPriorityArrival > 1 && tube.getSize() >= tube.MAXIMUM_CAPACITY/2){
+				return communicatedReturn(tube);
 
-					return true;
-				}
-				else{
-					return false;
-				}
 				
 			}
 		}
@@ -52,12 +47,22 @@ public class SmartRobotBehaviour implements IRobotBehaviour{
 		}
 	}
 
+	protected boolean communicatedReturn(StorageTube tube){
+		if(newPriorityArrival > 1 && tube.getSize() >= tube.MAXIMUM_CAPACITY/2){
+
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 	@Override
-	public void priorityArrival(int priority) {
+	public boolean priorityArrival(int priority) {
     	// Record that a new one has arrived
 		newPriorityArrival++;
     	System.out.println("T: "+Clock.Time()+" | Priority arrived");
-		
+		return true;
 	}
 
 	@Override

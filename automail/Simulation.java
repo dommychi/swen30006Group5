@@ -2,6 +2,8 @@ package automail;
 
 import exceptions.ExcessiveDeliveryException;
 import strategies.Automail;
+import strategies.NewIRobotBehaviour;
+import strategies.OldIRobotBehaviour;
 
 import java.io.FileReader;
 import java.util.HashMap;
@@ -93,7 +95,11 @@ public class Simulation {
         while(reportDelivery.numOfDelivery() != mailGenerator.MAIL_TO_CREATE) {
             //System.out.println("-- Step: "+Clock.Time());
             priority = mailGenerator.step();
-            if (priority > 0) automail.robot.behaviour.priorityArrival(priority);
+            if (priority > 0) {
+                OldIRobotBehaviour robotBehaviour = automail.robot.behaviour;
+                if (robotBehaviour instanceof  NewIRobotBehaviour)
+                    ((NewIRobotBehaviour)robotBehaviour).priorityArrival(priority);
+            }
             observeRobot();
             Clock.Tick();
         }
@@ -113,17 +119,7 @@ public class Simulation {
             System.exit(0);
         }
 
-
-
-
-
-
     }
-
-
-
-
-
 
 
 

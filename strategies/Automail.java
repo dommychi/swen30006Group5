@@ -1,7 +1,6 @@
 package strategies;
 
 import automail.IMailDelivery;
-import automail.MailItem;
 import automail.Robot;
 
 public class Automail {
@@ -18,8 +17,8 @@ public class Automail {
     	mailPool = new MailPool();
     	
         /** Initialize the RobotAction */
-    	// IRobotBehaviour robotBehaviour = new SimpleRobotBehaviour();
-    	IRobotBehaviour robotBehaviour = new SmartRobotBehaviour();
+    	// OldIRobotBehaviour robotBehaviour = new SimpleRobotBehaviour();
+    	NewIRobotBehaviour robotBehaviour = new SmartRobotBehaviour();
     	    	
     	/** Initialize robot */
     	robot = new Robot(robotBehaviour, delivery, mailPool);

@@ -2,7 +2,7 @@ package strategies;
 
 import automail.StorageTube;
 
-public interface IRobotBehaviour {
+public interface OldIRobotBehaviour {
 	
 	/** 
 	 * @param tube refers to the pack the robot uses to deliver mail.
@@ -10,11 +10,7 @@ public interface IRobotBehaviour {
 	 */
     public boolean returnToMailRoom(StorageTube tube);
     
-    /**
-     * @param priority is that of the mail item which just arrived.
-     */
-    public void priorityArrival(int priority);
-    
+
     /**
      * @param mailPool used to put back or get mail.
      * @param tube refers to the pack the robot uses to deliver mail.
