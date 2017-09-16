@@ -17,6 +17,7 @@ public class Robot {
 	StorageTube tube;
     IRobotBehaviour behaviour;
     IMailDelivery delivery;
+    Building building;
     /** Possible states the robot can be in */
     public enum RobotState { DELIVERING, WAITING, RETURNING }
 
@@ -46,7 +47,7 @@ public class Robot {
      * @param delivery governs the final delivery
      * @param mailPool is the source of mail items
      */
-    public Robot(IRobotBehaviour behaviour, IMailDelivery delivery, IMailPool mailPool){
+    public Robot(IRobotBehaviour behaviour, IMailDelivery delivery, IMailPool mailPool, Building building){
         // current_state = RobotState.WAITING;
     	current_state = RobotState.RETURNING;
     	MAIL_ROOM=6;
@@ -56,6 +57,7 @@ public class Robot {
         this.delivery = delivery;
         this.mailPool = mailPool;
         this.deliveryCounter = 0;
+        this.building = building;
     }
 
     /**
@@ -70,11 +72,11 @@ public class Robot {
     		/** This state is triggered when the robot is returning to the mailroom after a delivery */
     		case RETURNING:
     			/** If its current position is at the mailroom, then the robot should change state */
-                if(current_floor == Building.MAILROOM_LOCATION){
+                if(current_floor == building.MAILROOM_LOCATION){
                 	changeState(RobotState.WAITING);
                 } else {
                 	/** If the robot is not at the mailroom floor yet, then move towards it! */
-                    moveTowards(Building.MAILROOM_LOCATION);
+                    moveTowards(building.MAILROOM_LOCATION);
                 	break;
                 }
 

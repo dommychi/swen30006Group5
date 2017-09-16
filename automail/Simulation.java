@@ -1,16 +1,9 @@
 package automail;
 
 import exceptions.ExcessiveDeliveryException;
-import strategies.AutoMailDependecies;
 import strategies.Automail;
 import strategies.NewIRobotBehaviour;
 import strategies.IRobotBehaviour;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Properties;
 
 
 /*changes made so far
@@ -25,7 +18,6 @@ import java.util.Properties;
 public class Simulation {
 
     /** Constant for the mail generator */
-    private static final int MAIL_TO_CREATE = 60;
     
 
 
@@ -34,34 +26,9 @@ public class Simulation {
     private ReportDelivery reportDelivery;
 
     public static void main(String[] args){
-   	// Should probably be using properties here
-    	Properties automailProperties = new Properties();
-		// Property value may need to be converted from a string to the appropriate type
 
-		FileReader inStream = null;
-		
-		try {
-			inStream = new FileReader("automail.properties");
-			automailProperties.load(inStream);
-		} catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-			 if (inStream != null) {
-                 try {
-                     inStream.close();
-                 } catch (IOException e) {
-                     e.printStackTrace();
-                 }
-             }
-		}
-
-        Simulation simulation = new Simulation(automailProperties);
+        Simulation simulation = new Simulation();
         simulation.run();
-
-
-
 
 
 
@@ -70,25 +37,22 @@ public class Simulation {
 
 
 
-    public Simulation(Properties automailProperties){
+    public Simulation(){
 
 
         /** Used to see whether a seed is initialized or not */
 
         /** Read the first argument and save it as a seed if it exists */
 
-        AutoMailDependecies autoMailDependecies = new AutoMailDependecies(automailProperties);
+        AutoMailFactory autoMailFactory = new AutoMailFactory();
 
         reportDelivery = new ReportDelivery();
-        automail = new Automail(reportDelivery,autoMailDependecies);
+        automail = new Automail(reportDelivery, autoMailFactory);
+        mailGenerator = autoMailFactory.generateMailGenerator(automail.mailPool);
         /** Initiate all the mail */
 
-        if(automailProperties.containsKey("Seed")){
-            int seed = Integer.parseInt(automailProperties.getProperty("Seed"));
-            mailGenerator= new MailGenerator(MAIL_TO_CREATE, automail.mailPool, seed);
-        } else{
-            mailGenerator= new MailGenerator(MAIL_TO_CREATE, automail.mailPool);
-        }
+
+
 
     }
 

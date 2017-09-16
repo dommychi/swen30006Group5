@@ -4,12 +4,18 @@ public class Building {
 	
 	
     /** The number of floors in the building **/
-    public static final int FLOORS = 9;
+    public final int FLOORS;
     
     /** Represents the ground floor location */
-    public static final int LOWEST_FLOOR = 1;
+    public final int LOWEST_FLOOR;
     
     /** Represents the mailroom location */
-    public static final int MAILROOM_LOCATION = 1;
+    public final int MAILROOM_LOCATION;
+
+    Building(int FLOORS, int LOWEST_FLOOR, int MAILROOM_LOCATION){
+        this.FLOORS = FLOORS;
+        this.LOWEST_FLOOR = LOWEST_FLOOR;
+        this.MAILROOM_LOCATION = MAILROOM_LOCATION;
+    }
 
 }

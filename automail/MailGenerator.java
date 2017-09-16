@@ -17,6 +17,7 @@ public class MailGenerator {
     /** This seed is used to make the behaviour deterministic */
     
     private boolean complete;
+    private Building building;
     private IMailPool mailPool;
 
     private HashMap<Integer,ArrayList<MailItem>> allMail;
@@ -27,7 +28,7 @@ public class MailGenerator {
      * @param mailPool where mail items go on arrival
      * @param seed random seed for generating mail
      */
-    public MailGenerator(int mailToCreate, IMailPool mailPool,int seed){
+    public MailGenerator(int mailToCreate, IMailPool mailPool,int seed, Building building){
 
         this.random = new Random((long) seed);
         // Vary arriving mail by +/-20%
@@ -37,10 +38,11 @@ public class MailGenerator {
         complete = false;
         allMail = new HashMap<Integer,ArrayList<MailItem>>();
         this.mailPool = mailPool;
+        this.building = building;
     }
 
 
-    public MailGenerator(int mailToCreate, IMailPool mailPool){
+    public MailGenerator(int mailToCreate, IMailPool mailPool, Building building){
 
         this.random = new Random();
         // Vary arriving mail by +/-20%
@@ -50,6 +52,7 @@ public class MailGenerator {
         complete = false;
         allMail = new HashMap<Integer,ArrayList<MailItem>>();
         this.mailPool = mailPool;
+        this.building = building;
     }
 
     /**
@@ -74,7 +77,9 @@ public class MailGenerator {
      * @return a destination floor between the ranges of GROUND_FLOOR to FLOOR
      */
     private int generateDestinationFloor(){
-        return Building.LOWEST_FLOOR + random.nextInt(Building.FLOORS);
+
+
+        return building.LOWEST_FLOOR + random.nextInt(building.FLOORS);
     }
 
     /**
