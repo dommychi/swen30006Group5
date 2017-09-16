@@ -10,15 +10,15 @@ public class Automail {
     public Robot robot;
     public IMailPool mailPool;
     
-    public Automail(IMailDelivery delivery) {
+    public Automail(IMailDelivery delivery, AutoMailDependecies autoMailDependecies) {
     	// Swap between simple provided strategies and your strategies here
     	    	
     	/** Initialize the MailPool */
     	mailPool = new MailPool();
     	
         /** Initialize the RobotAction */
-    	// OldIRobotBehaviour robotBehaviour = new SimpleRobotBehaviour();
-    	NewIRobotBehaviour robotBehaviour = new SmartRobotBehaviour();
+    	// IRobotBehaviour robotBehaviour = new SimpleRobotBehaviour();
+    	IRobotBehaviour robotBehaviour = autoMailDependecies.generateBehaviour();
     	    	
     	/** Initialize robot */
     	robot = new Robot(robotBehaviour, delivery, mailPool);

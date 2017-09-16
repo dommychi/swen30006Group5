@@ -2,7 +2,7 @@ package strategies;
 
 import automail.StorageTube;
 
-public interface OldIRobotBehaviour {
+public interface IRobotBehaviour {
 	
 	/** 
 	 * @param tube refers to the pack the robot uses to deliver mail.

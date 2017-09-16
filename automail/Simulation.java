@@ -1,11 +1,14 @@
 package automail;
 
 import exceptions.ExcessiveDeliveryException;
+import strategies.AutoMailDependecies;
 import strategies.Automail;
 import strategies.NewIRobotBehaviour;
-import strategies.OldIRobotBehaviour;
+import strategies.IRobotBehaviour;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -31,29 +34,30 @@ public class Simulation {
     private ReportDelivery reportDelivery;
 
     public static void main(String[] args){
-/*    	// Should probably be using properties here
+   	// Should probably be using properties here
     	Properties automailProperties = new Properties();
-		// Defaults
-		automailProperties.setProperty("Name_of_Property", "20");  // Property value may need to be converted from a string to the appropriate type
+		// Property value may need to be converted from a string to the appropriate type
 
 		FileReader inStream = null;
 		
 		try {
 			inStream = new FileReader("automail.properties");
 			automailProperties.load(inStream);
-		} finally {
+		} catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
 			 if (inStream != null) {
-	                inStream.close();
-	            }
+                 try {
+                     inStream.close();
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
+             }
 		}
-		
-		int i = Integer.parseInt(automailProperties.getProperty("Name_of_Property"));
 
-
-
-*/
-
-        Simulation simulation = new Simulation(args);
+        Simulation simulation = new Simulation(automailProperties);
         simulation.run();
 
 
@@ -66,24 +70,25 @@ public class Simulation {
 
 
 
-    public Simulation(String[] args){
+    public Simulation(Properties automailProperties){
 
 
         /** Used to see whether a seed is initialized or not */
-        HashMap<Boolean, Integer> seedMap = new HashMap<>();
-
 
         /** Read the first argument and save it as a seed if it exists */
-        if(args.length != 0){
-            int seed = Integer.parseInt(args[0]);
-            seedMap.put(true, seed);
-        } else{
-            seedMap.put(false, 0);
-        }
+
+        AutoMailDependecies autoMailDependecies = new AutoMailDependecies(automailProperties);
+
         reportDelivery = new ReportDelivery();
-        automail = new Automail(reportDelivery);
+        automail = new Automail(reportDelivery,autoMailDependecies);
         /** Initiate all the mail */
-        mailGenerator= new MailGenerator(MAIL_TO_CREATE, automail.mailPool, seedMap);
+
+        if(automailProperties.containsKey("Seed")){
+            int seed = Integer.parseInt(automailProperties.getProperty("Seed"));
+            mailGenerator= new MailGenerator(MAIL_TO_CREATE, automail.mailPool, seed);
+        } else{
+            mailGenerator= new MailGenerator(MAIL_TO_CREATE, automail.mailPool);
+        }
 
     }
 
@@ -96,9 +101,10 @@ public class Simulation {
             //System.out.println("-- Step: "+Clock.Time());
             priority = mailGenerator.step();
             if (priority > 0) {
-                OldIRobotBehaviour robotBehaviour = automail.robot.behaviour;
-                if (robotBehaviour instanceof  NewIRobotBehaviour)
-                    ((NewIRobotBehaviour)robotBehaviour).priorityArrival(priority);
+                IRobotBehaviour robotBehaviour = automail.robot.behaviour;
+                if (robotBehaviour instanceof  NewIRobotBehaviour) {
+                    ((NewIRobotBehaviour) robotBehaviour).priorityArrival(priority);
+                }
             }
             observeRobot();
             Clock.Tick();

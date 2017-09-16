@@ -8,7 +8,7 @@ public class Clock {
     /** The threshold for the latest time for mail to arrive **/
     public static final int LAST_DELIVERY_TIME = 100;
 
-    public static int Time() {
+    public static   int Time() {
     	return Time;
     }
     
